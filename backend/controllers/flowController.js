@@ -1,33 +1,63 @@
-// change this version
-let flowConfig = {
-  page2: ['aboutMe'],   // components
-  page3: ['address']
-};
+const bcrypt = require('bcrypt');
+const User = require('../models/User');
+const UserAddress = require('../models/UserAddress');
+const FlowConfig = require('../models/FlowConfig');
 
-// POST /api/user-flow/register
+// ensure 1 row exists for config
+async function ensureConfig() {
+  const row = await FlowConfig.findOne();
+  if (row) return row;
+  return FlowConfig.create({ page2: ['aboutMe'], page3: ['address'] });
+}
+
+// POST /api/user-flow/register  { email, password }
 exports.beginRegistration = async (req, res) => {
-  const { email, password } = req.body || {};
-  if (!email || !password) return res.status(400).json({ message: 'Email & password required' });
+  try {
+    const { email, password } = req.body || {};
+    if (!email || !password) return res.status(400).json({ message: 'Email & password required' });
 
-  // TODO: save user to DB (hash password), return userId
-  const mockUserId = Math.floor(Math.random() * 1000000);
-  res.status(201).json({ userId: mockUserId });
+    const passwordHash = await bcrypt.hash(password, 10);
+    const user = await User.create({ email, passwordHash });
+
+    res.status(201).json({ userId: user.id });
+  } catch (e) {
+    res.status(400).json({ message: 'Register failed', error: e.message });
+  }
 };
 
-// PATCH /api/user-flow/:userId
+// PATCH /api/user-flow/:userId  { aboutMe?, birthdate?, address? }
 exports.updateOnboardingStep = async (req, res) => {
-  const { userId } = req.params;
-  const { aboutMe, birthdate, address } = req.body || {};
-  // TODO: persist these to DB (User + UserAddress)
-  res.json({ ok: true, userId, saved: { aboutMe, birthdate, address } });
+  try {
+    const { userId } = req.params;
+    const { aboutMe, birthdate, address } = req.body || {};
+
+    const user = await User.findByPk(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    if (aboutMe !== undefined) user.aboutMe = aboutMe;
+    if (birthdate !== undefined) user.birthdate = birthdate;
+    await user.save();
+
+    if (address) {
+      const { street, city, state, zip } = address;
+      let ua = await UserAddress.findOne({ where: { userId } });
+      if (!ua) ua = await UserAddress.create({ userId, street, city, state, zip });
+      else await ua.update({ street, city, state, zip });
+    }
+
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(400).json({ message: 'Update failed', error: e.message });
+  }
 };
 
 // GET /api/flow-admin/config
 exports.getFlowConfig = async (_req, res) => {
-  res.json(flowConfig);
+  const cfg = await ensureConfig();
+  res.json({ page2: cfg.page2, page3: cfg.page3 });
 };
 
-// PUT /api/flow-admin/config
+// PUT /api/flow-admin/config  { page2:[], page3:[] }
 exports.updateFlowConfig = async (req, res) => {
   const { page2, page3 } = req.body || {};
   const allowed = new Set(['aboutMe', 'address', 'birthdate']);
@@ -36,6 +66,8 @@ exports.updateFlowConfig = async (req, res) => {
   if (![...page2, ...page3].every(c => allowed.has(c)))
     return res.status(400).json({ message: 'invalid component name' });
 
-  flowConfig = { page2, page3 };
-  res.json({ ok: true, flowConfig });
+  const cfg = await ensureConfig();
+  cfg.page2 = page2; cfg.page3 = page3;
+  await cfg.save();
+  res.json({ ok: true });
 };

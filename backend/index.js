@@ -12,6 +12,7 @@ const log = require('./utils/logUtil');
 const userFlowRoutes = require('./routes/userFlowRoutes');
 const flowAdminRoutes = require('./routes/flowAdminRoutes');
 const authRoutes = require('./routes/authRoutes');
+const dataRoutes = require('./routes/dataRoutes'); //for new dataRoutes
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,6 +26,7 @@ app.use((req, _res, next) => { log('request', { method: req.method, path: req.pa
 app.use('/api/user-flow', userFlowRoutes);
 app.use('/api/flow-admin', flowAdminRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/data', dataRoutes) //for new dataRoutes
 
 app.get('/', (_req, res) => res.send('Custom Onboarding API is alive'));
 app.get('/healthz', async (_req, res) => {
