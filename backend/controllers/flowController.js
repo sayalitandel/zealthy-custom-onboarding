@@ -3,7 +3,7 @@ const User = require('../models/User');
 const UserAddress = require('../models/UserAddress');
 const FlowConfig = require('../models/FlowConfig');
 
-// ensure 1 row exists for config
+
 async function ensureConfig() {
   const row = await FlowConfig.findOne();
   if (row) return row;
@@ -11,7 +11,7 @@ async function ensureConfig() {
 }
 
 // POST /api/user-flow/register  { email, password }
-exports.beginRegistration = async (req, res) => {
+async function beginRegistration(req, res) {
   try {
     const { email, password } = req.body || {};
     if (!email || !password) return res.status(400).json({ message: 'Email & password required' });
@@ -23,10 +23,9 @@ exports.beginRegistration = async (req, res) => {
   } catch (e) {
     res.status(400).json({ message: 'Register failed', error: e.message });
   }
-};
+}
 
-// PATCH /api/user-flow/:userId  { aboutMe?, birthdate?, address? }
-exports.updateOnboardingStep = async (req, res) => {
+async function updateOnboardingStep(req, res) {
   try {
     const { userId } = req.params;
     const { aboutMe, birthdate, address } = req.body || {};
@@ -46,19 +45,28 @@ exports.updateOnboardingStep = async (req, res) => {
     }
 
     res.json({ ok: true });
-  } catch (e) {
-    res.status(400).json({ message: 'Update failed', error: e.message });
+  // } catch (e) {
+  //   res.status(400).json({ message: 'Update failed', error: e.message });
+  // }
+    } catch (e) {
+    const isUnique = e.name === 'SequelizeUniqueConstraintError';
+    const isValidation = e.name === 'SequelizeValidationError';
+    const detail =
+      isUnique ? 'Email already exists' :
+      isValidation ? (e.errors?.[0]?.message || 'Invalid input') :
+      e.message;
+    return res.status(isUnique ? 409 : 400).json({ message: 'Register failed', error: detail });
   }
-};
+}
 
 // GET /api/flow-admin/config
-exports.getFlowConfig = async (_req, res) => {
+async function getFlowConfig(_req, res) {
   const cfg = await ensureConfig();
   res.json({ page2: cfg.page2, page3: cfg.page3 });
-};
+}
 
 // PUT /api/flow-admin/config  { page2:[], page3:[] }
-exports.updateFlowConfig = async (req, res) => {
+async function updateFlowConfig(req, res) {
   const { page2, page3 } = req.body || {};
   const allowed = new Set(['aboutMe', 'address', 'birthdate']);
   if (!Array.isArray(page2) || !page2.length || !Array.isArray(page3) || !page3.length)
@@ -70,4 +78,12 @@ exports.updateFlowConfig = async (req, res) => {
   cfg.page2 = page2; cfg.page3 = page3;
   await cfg.save();
   res.json({ ok: true });
+}
+
+module.exports = {
+  ensureConfig,
+  beginRegistration,
+  updateOnboardingStep,
+  getFlowConfig,
+  updateFlowConfig,
 };

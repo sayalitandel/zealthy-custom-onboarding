@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
-// Login-auth Implementation Trial
 router.post('/login', (req, res) => {
   const { userName, userPassword } = req.body;
   if (!userName || !userPassword) return res.status(400).json({ message: 'Missing credentials' });
