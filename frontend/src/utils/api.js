@@ -17,6 +17,7 @@ export const updateUserStep = async (userId, payload) =>
   (await api.patch(`/user-flow/${userId}`, payload)).data;
 
 //Data
-export const getAllUsers = () => api.get("/data/users");
+// export const getAllUsers = () => api.get("/data/users");
+export const getAllUsers = async () => (await api.get("/data/users")).data;
 
 export default api;

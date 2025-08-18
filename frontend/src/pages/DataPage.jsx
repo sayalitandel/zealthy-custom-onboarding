@@ -3,7 +3,19 @@ import { getAllUsers } from '../utils/api';
 
 export default function DataPage() {
   const [rows, setRows] = useState([]);
-  useEffect(() => { (async () => setRows(await getAllUsers()))(); }, []);
+  // useEffect(() => { (async () => setRows(await getAllUsers()))(); }, []);
+  useEffect(() => {
+  (async () => {
+    try {
+      const data = await getAllUsers();                       // data may be [] or {users: []}
+      const list = Array.isArray(data) ? data : (data?.users ?? []);
+      setRows(list);                                          // always an array
+    } catch (e) {
+      console.error(e);
+      setRows([]);                                            // keep it an array on error
+    }
+  })();
+}, []);
   return (
     <div style={{padding:24}}>
       <h2>Collected Users</h2>
