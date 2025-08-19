@@ -71,8 +71,15 @@ async function updateFlowConfig(req, res) {
   const allowed = new Set(['aboutMe', 'address', 'birthdate']);
   if (!Array.isArray(page2) || !page2.length || !Array.isArray(page3) || !page3.length)
     return res.status(400).json({ message: 'page2/page3 must be non-empty arrays' });
-  if (![...page2, ...page3].every(c => allowed.has(c)))
+
+  const allChosen = [...page2, ...page3];
+
+  if (!allChosen.every(c => allowed.has(c)))
     return res.status(400).json({ message: 'invalid component name' });
+
+  if (new Set(page2).size !== page2.length || new Set(page3).size !== page3.length) {
+    return res.status(400).json({ message: 'duplicate component on same page not allowed' });
+  }
 
   const cfg = await ensureConfig();
   cfg.page2 = page2; cfg.page3 = page3;
