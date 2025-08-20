@@ -2,16 +2,49 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getFlowConfig, registerUser, updateUserStep } from '../utils/api';
 
+const STORAGE_KEY = 'onboardingProgress'; // saving progress locally
+
+const initialF = {
+  email:'', password:'', aboutMe:'', birthdate:'',
+  street:'', city:'', state:'', zip:''
+};
+
+const loadProgress = () => {
+  try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; }
+  catch { return null; }
+};
+const saveProgress = (p) => localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+const clearProgress = () => localStorage.removeItem(STORAGE_KEY);
+
 export default function Wizard() {
+  
   const [cfg, setCfg] = useState(null);
   const [step, setStep] = useState(1);
   const [userId, setUserId] = useState(null);
-  const [f, setF] = useState({ email:'', password:'', aboutMe:'', birthdate:'', street:'', city:'', state:'', zip:'' });
+  // const [f, setF] = useState({ email:'', password:'', aboutMe:'', birthdate:'', street:'', city:'', state:'', zip:'' });
+  const [f, setF] = useState(initialF);
+  const [resumeOffer, setResumeOffer] = useState(null);
 
   const navigate = useNavigate();
 
-  useEffect(() => { (async () => { const cfgData = await getFlowConfig(); setCfg(cfgData); })(); }, []);
-  const on = e => setF(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  // useEffect(() => { (async () => { const cfgData = await getFlowConfig(); setCfg(cfgData); })(); }, []);
+  useEffect(() => {
+    (async() => {
+      const cfgData = await getFlowConfig();
+      setCfg(cfgData);
+    })();
+
+    const saved = loadProgress();
+    if (saved?.userId) setResumeOffer(saved);
+  }, []);
+  // const on = e => setF(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const on = e => {
+    const next = { ...f, [e.target.name]: e.target.value};
+    setF(next);
+    if (userId) {
+      saveProgress({ userID, step, data: next });
+    }
+  };
 
   const submit = async () => {
     if (step === 4) return;
@@ -22,6 +55,8 @@ export default function Wizard() {
       try {
       const reg = await registerUser(f.email, f.password); // reg = { userId }
       setUserId(reg.userId);
+
+      saveProgress({ userId: reg.userId, step: 2, data: {} });
 
       if (!cfg) {
         const resp = await getFlowConfig();
@@ -44,9 +79,22 @@ export default function Wizard() {
     if (comps.includes('birthdate')) payload.birthdate = f.birthdate;
     if (comps.includes('address')) payload.address = { street: f.street, city: f.city, state: f.state, zip: f.zip };
     await updateUserStep(userId, payload);
-    // if (step === 3) { window.location.href = '/data'; } else setStep(3);
-    // if (step === 3) { navigate('/'); return; } else setStep(3);
-    if (step === 3) { setStep(4);
+
+    if (step === 2) {
+      const draft = {
+        aboutMe: f.aboutMe,
+        birthdate: f.birthdate,
+        street: f.street,
+        city: f.city,
+        state: f.state,
+        zip: f.zip,
+      };
+      saveProgress({ userId, step: 3, data: draft });
+    }
+
+    if (step === 3) { 
+      clearProgress();
+      setStep(4);
        return; 
     } else { 
       setStep(3);
@@ -76,19 +124,51 @@ export default function Wizard() {
   return (
     <div style={{display:'grid', gap:12, maxWidth:520}}>
       <h3>{step <= 3 ? `Onboarding — Step ${step} of 3` : 'All set!'}</h3>
+
       {step===1 && (
         <>
           <input name="email" placeholder="Email" value={f.email} onChange={on} />
           <input name="password" type="password" placeholder="Password" value={f.password} onChange={on} />
         </>
       )}
+
+      {step === 1 && resumeOffer && (
+        <div style={{
+          marginTop: 8, padding: '8px 12px', borderRadius: 8,
+          background: '#FFF8E1', border: '1px solid #FFE082'
+        }}>
+          <div style={{ marginBottom: 8 }}>
+            Looks like you started onboarding earlier. Resume where you left off?
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              type="button"
+              onClick={() => {
+                const saved = loadProgress();
+                if (!saved) return;
+                setUserId(saved.userId);
+                setStep(saved.step ?? 2);
+                setF(prev => ({ ...prev, ...saved.data }));
+                setResumeOffer(null);
+              }}
+            >
+              Resume
+            </button>
+           <button type="button" onClick={() => setResumeOffer(null)}>Not now</button>
+          </div>
+        </div>
+      )}
+
+
       {step===2 && fields(cfg.page2)}
       {step===3 && fields(cfg.page3)}
+
       {step <= 3 && (
         <button onClick={submit} disabled={step !== 1 && !cfg}>
           {step === 3 ? 'Finish' : 'Next'}
         </button>
       )}
+
       {step === 4 && (
       <div style={{
         marginTop: 12,
@@ -103,8 +183,6 @@ export default function Wizard() {
         <button type="button" onClick={() => { window.location.href = '/'; }}>
           OK (Go to start)
         </button>
-        {/* Optional for reviewers only: */}
-        {/* <a href="/data"><button type="button">View Data (testing)</button></a> */}
       </div>
       </div>
     )}
