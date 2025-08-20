@@ -39,6 +39,11 @@ async function updateOnboardingStep(req, res) {
 
     if (address) {
       const { street, city, state, zip } = address;
+
+      // if (zip && !/^\d{5}(-\d{4})?$/.test(zip)) {
+      //   return res.status(400).json({message: 'Invalid ZIP code'});
+      // } (future improvement: validate ZIP code format)
+
       let ua = await UserAddress.findOne({ where: { userId } });
       if (!ua) ua = await UserAddress.create({ userId, street, city, state, zip });
       else await ua.update({ street, city, state, zip });

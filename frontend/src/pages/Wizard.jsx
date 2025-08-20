@@ -64,7 +64,10 @@ export default function Wizard() {
           <input name="street" placeholder="Street" value={f.street} onChange={on} />
           <input name="city" placeholder="City" value={f.city} onChange={on} />
           <input name="state" placeholder="State" value={f.state} onChange={on} />
-          <input name="zip" placeholder="Zip" value={f.zip} onChange={on} />
+          <input name="zip" placeholder="Zip" value={f.zip} 
+           onChange={(e) => setF(prev => ({ ...prev, zip: e.target.value.replace(/\D/g, '')}))}
+           inputMode="numeric" maxLength={5}
+            />
         </>
       )}
     </>
