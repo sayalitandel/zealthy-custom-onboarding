@@ -9,6 +9,8 @@ const initialF = {
   street:'', city:'', state:'', zip:''
 };
 
+const todayStr = new Date().toISOString().slice(0, 10); 
+
 const loadProgress = () => {
   try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; }
   catch { return null; }
@@ -106,7 +108,7 @@ export default function Wizard() {
   const fields = (page) => (
     <>
       {page.includes('aboutMe') && (<textarea name="aboutMe" placeholder="About me" value={f.aboutMe} onChange={on} />)}
-      {page.includes('birthdate') && (<input name="birthdate" type="date" value={f.birthdate} onChange={on} />)}
+      {page.includes('birthdate') && (<input name="birthdate" type="date" max={todayStr} min="1900-01-01" value={f.birthdate} onChange={on} />)}
       {page.includes('address') && (
         <>
           <input name="street" placeholder="Street" value={f.street} onChange={on} />
