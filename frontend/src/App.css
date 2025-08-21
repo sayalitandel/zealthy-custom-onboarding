@@ -1,42 +1,181 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* --- Base Style --- */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: #faf7f2;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* --- Page layout --- */
+.container {
+  min-height: 100%;
+  display: grid;
+  place-items: center;          
+  padding: 24px;                
+}
+
+/* --- Card --- */
+.login-form {
+  width: 100%;
+  max-width: 640px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 28px;
+  text-align: left;
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.06),
+    0 2px 6px rgba(0,0,0,0.04);
+}
+.login-form h2 {
+  margin: 0 0 12px;
+  text-align: center;
+  font-weight: 700;
+}
+.login-form h3 {
+  margin: 8px 0 16px;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+/* --- Fields --- */
+.login-form label {
+  display: block;
+  margin: 12px 0 6px;
+  font-weight: 600;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.login-form input,
+.login-form textarea,
+.login-form select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fffbea;          
+  outline: none;
 }
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.login-form input:focus,
+.login-form textarea:focus,
+.login-form select:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96,165,250,.25);
 }
 
-.card {
-  padding: 2em;
+/* --- Buttons --- */
+.login-form button[type="submit"],
+.login-form button {
+  width: 100%;
+  padding: 12px 16px;
+  margin-top: 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #4f89e8;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.login-form button[type="submit"]:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+.login-form button:hover { filter: brightness(0.96); }
+
+/* --- Stepper --- */
+.stepper {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 0 18px;
+}
+.stepper .dot {
+  width: 8px; height: 8px; border-radius: 999px;
+  background: #d1d5db;
+}
+.stepper .dot.active { background: #60a5fa; }
+
+/* --- Banners --- */
+.resume-banner {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #FFF8E1;
+  border: 1px solid #FFE082;
+}
+.success-banner {
+  margin-top: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #EEF7FF;
+  border: 1px solid #B3DAFF;
 }
 
-.read-the-docs {
-  color: #888;
+/* --- Admin card --- */
+.admin-dashboard {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.06);
+  text-align: left;
 }
+
+.admin-dashboard h2 {
+  margin: 0 0 12px;
+}
+
+.admin-dashboard p {
+  margin: 0 0 16px;
+}
+
+.admin-dashboard button {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: #4f89e8;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Frame for data tables */
+.page {
+  min-height: 100%;
+  display: grid;
+  place-items: start center;
+  padding: 32px 16px;
+  background: #faf7f2;
+}
+
+/* Card wrapper */
+.data-card{
+  width: 100%;
+  max-width: 1060px;
+  background:#fff;
+  border:1px solid #eee;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.06);
+  padding:24px;
+}
+
+.data-card h2{ margin:0 0 16px; text-align:center; }
+
+.data-table{ width:100%; border-collapse:collapse; }
+.data-table thead th{
+  background:#f4f6eb;           
+  font-weight:700;
+  text-align:left;
+  border-bottom:1px solid #e5e7eb;
+}
+.data-table th, .data-table td{
+  padding:12px 14px;
+  border-bottom:1px solid #eee;
+  vertical-align:top;
+  word-break:break-word;
+}
+.data-table tbody tr:nth-child(odd){ background:#fafafa; }

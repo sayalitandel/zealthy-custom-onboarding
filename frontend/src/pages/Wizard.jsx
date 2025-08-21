@@ -44,7 +44,7 @@ export default function Wizard() {
     const next = { ...f, [e.target.name]: e.target.value};
     setF(next);
     if (userId) {
-      saveProgress({ userID, step, data: next });
+      saveProgress({ userId, step, data: next });
     }
   };
 
@@ -124,61 +124,53 @@ export default function Wizard() {
   );
 
   return (
-    <div style={{display:'grid', gap:12, maxWidth:520}}>
-      <h3>{step <= 3 ? `Onboarding — Step ${step} of 3` : 'All set!'}</h3>
+    <div className="container">
+      <form className="login-form" onSubmit={(e)=>{ e.preventDefault(); submit(); }}>
+      <div className="stepper">
+        {[1,2,3].map(n => (
+          <div key={n} className={`dot ${step >= n ? 'active' : ''}`} />
+        ))}
+      </div>
+
+      <h3>{step <= 3 ? `Step ${step} of 3` : 'All set!'}</h3>
 
       {step===1 && (
         <>
+          <label>Email</label>
           <input name="email" placeholder="Email" value={f.email} onChange={on} />
+          <label>Password</label>
           <input name="password" type="password" placeholder="Password" value={f.password} onChange={on} />
-        </>
-      )}
 
-      {step === 1 && resumeOffer && (
-        <div style={{
-          marginTop: 8, padding: '8px 12px', borderRadius: 8,
-          background: '#FFF8E1', border: '1px solid #FFE082'
-        }}>
-          <div style={{ marginBottom: 8 }}>
-            Looks like you started onboarding earlier. Resume where you left off?
-          </div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <button
-              type="button"
-              onClick={() => {
-                const saved = loadProgress();
-                if (!saved) return;
+          {resumeOffer && (
+            <div className="resume-banner">
+              <div style={{ marginBottom: 8 }}>
+                Looks like you started onboarding earlier. Resume where you left off?
+              </div>
+              <button type="button" onClick={() => {
+                const saved = loadProgress(); if (!saved) return;
                 setUserId(saved.userId);
                 setStep(saved.step ?? 2);
                 setF(prev => ({ ...prev, ...saved.data }));
                 setResumeOffer(null);
-              }}
-            >
-              Resume
-            </button>
-           <button type="button" onClick={() => setResumeOffer(null)}>Not now</button>
-          </div>
-        </div>
+              }}>
+                Resume
+              </button>
+            </div>
+          )}
+        </>
       )}
-
 
       {step===2 && fields(cfg.page2)}
       {step===3 && fields(cfg.page3)}
 
       {step <= 3 && (
-        <button onClick={submit} disabled={step !== 1 && !cfg}>
+        <button type="submit" disabled={step !== 1 && !cfg}>
           {step === 3 ? 'Finish' : 'Next'}
         </button>
       )}
 
       {step === 4 && (
-      <div style={{
-        marginTop: 12,
-        padding: 16,
-        borderRadius: 12,
-        background: '#EEF7FF',
-        border: '1px solid #B3DAFF'
-      }}>
+      <div className="success-banner">
       <h3 style={{ margin: 0 }}>Submission successful 🎉</h3>
       <p style={{ margin: '8px 0 12px' }}>Your onboarding info has been saved.</p>
       <div style={{ display: 'flex', gap: 8 }}>
@@ -188,6 +180,7 @@ export default function Wizard() {
       </div>
       </div>
     )}
-      </div>
+      </form>
+    </div>
   );
 }

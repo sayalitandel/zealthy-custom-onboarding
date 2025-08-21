@@ -63,19 +63,15 @@ export default function AdminPage() {
   );
 
   return (
-    <div
-      style={{ maxWidth: 720, margin: "40px auto", fontFamily: "system-ui" }}
-    >
-      <h2>Admin — Configure Onboarding Pages</h2>
-      <p style={{ margin: "8px 0 16px", color: "#444" }}>
-        Configure which data components appear on each page.{" "}
-        <b>Each page must have at least one component</b>. A component can
-        appear on <b>only one</b> of the two pages.
-      </p>
-      {row("page2")}
-      {row("page3")}
-      <button onClick={save}>Save</button>
-      {msg && <p>{msg}</p>}
-    </div>
-  );
+  <div className="admin-dashboard">
+    <h2>Admin — Configure Onboarding Pages</h2>
+    <p>Choose which components appear on each page. Each page must have at least one.</p>
+
+    {row('page2')}
+    {row('page3')}
+
+    <button onClick={save}>Save</button>
+    {msg && <p>{msg}</p>}
+  </div>
+);
 }
