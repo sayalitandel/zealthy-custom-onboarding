@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getFlowConfig, updateFlowConfig } from '../utils/api';
 
 const ALL = ['aboutMe','address','birthdate'];
@@ -33,9 +34,6 @@ export default function AdminPage() {
         otherSet.delete(comp);
       }
       
-      // const s = new Set(prev[page]);
-      // s.has(comp) ? s.delete(comp) : s.add(comp);
-      // return { ...prev, [page]: [...s] };
       return { ...prev, [page]: [...thisSet], [other]: [...otherSet] };
     });
   };
@@ -64,6 +62,11 @@ export default function AdminPage() {
 
   return (
   <div className="admin-dashboard">
+    <div className="admin-mini-nav">
+    <Link to="/">Onboarding</Link>
+    <span>·</span>
+    <Link to="/data">Data</Link>
+    </div>
     <h2>Admin — Configure Onboarding Pages</h2>
     <p>Choose which components appear on each page. Each page must have at least one.</p>
 

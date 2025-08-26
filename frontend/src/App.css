@@ -1,3 +1,7 @@
+:root {
+  --topbar-h: 64px;
+}
+
 /* --- Base Style --- */
 html, body, #root {
   height: 100%;
@@ -11,10 +15,11 @@ body {
 
 /* --- Page layout --- */
 .container {
-  min-height: 100%;
-  display: grid;
-  place-items: center;          
-  padding: 24px;                
+  max-width: 640px;
+  width: 100%;
+  margin: 24px auto 0;       
+  padding: 0 16px;           
+  display: block;                  
 }
 
 /* --- Card --- */
@@ -143,15 +148,6 @@ body {
   cursor: pointer;
 }
 
-/* Frame for data tables */
-.page {
-  min-height: 100%;
-  display: grid;
-  place-items: start center;
-  padding: 32px 16px;
-  background: #faf7f2;
-}
-
 /* Card wrapper */
 .data-card{
   width: 100%;
@@ -179,3 +175,51 @@ body {
   word-break:break-word;
 }
 .data-table tbody tr:nth-child(odd){ background:#fafafa; }
+
+
+.brand {
+  font-weight: 800; letter-spacing: .08em;
+  text-decoration: none; color: #1b1b1b; font-size: 22px;
+}
+
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  background: #eef0e6;
+  border-bottom: 1px solid #e5e7eb;
+
+  height: var(--topbar-h);             
+  padding: 0 24px;           
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page {
+  min-height: calc(100vh - var(--topbar-h));
+  padding: 24px 16px 64px;           
+  display: flex;
+  justify-content: center;          
+  align-items: flex-start;           
+  background: #faf7f2;
+}
+
+.brand { font-weight: 800; letter-spacing: 2px; }
+.navlinks a {
+  margin-left: 16px; text-decoration: none; color: #111;
+  padding: 6px 10px; border-radius: 6px;
+}
+.navlinks a:hover { background: #e8ece0; }
+
+.admin-mini-nav {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+.admin-mini-nav a {
+  text-decoration: none;
+  color: #111;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.admin-mini-nav a:hover { background: #e8ece0; }
