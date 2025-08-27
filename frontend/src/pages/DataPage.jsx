@@ -19,11 +19,11 @@ export default function DataPage() {
   return (
     <div className="page">
       <div className="data-card">
-        <h2>Collected Users</h2>
+        <h2> User Data</h2>
         <table className="data-table">
           <thead><tr>
             <th>Email</th><th>About Me</th><th>Birthdate</th>
-            <th>Street</th><th>City</th><th>State</th><th>Zip</th>
+            <th>Street Address</th><th>City</th><th>State</th><th>ZIP</th>
           </tr></thead>
           <tbody>
             {rows.map(r => (

@@ -131,6 +131,7 @@ body {
 
 .admin-dashboard h2 {
   margin: 0 0 12px;
+  text-align: center;
 }
 
 .admin-dashboard p {
@@ -184,7 +185,7 @@ body {
 
 .topbar {
   position: sticky; top: 0; z-index: 10;
-  background: #eef0e6;
+  background:#69a28e;
   border-bottom: 1px solid #e5e7eb;
 
   height: var(--topbar-h);             
@@ -218,7 +219,7 @@ body {
 }
 .admin-mini-nav a {
   text-decoration: none;
-  color: #111;
+  color: #0000FF;
   padding: 4px 8px;
   border-radius: 6px;
 }

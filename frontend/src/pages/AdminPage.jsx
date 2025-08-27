@@ -46,7 +46,7 @@ export default function AdminPage() {
 
   const row = (page) => (
     <div style={{marginBottom:16}}>
-      <h3>{page.toUpperCase()}</h3>
+      <h3>PAGE {page.slice(-1)}</h3>
       {ALL.map(c => {
         const checked = !!cfg[page]?.includes(c);
         const onlyOnPage = checked && (cfg[page]?.length === 1);
@@ -63,9 +63,7 @@ export default function AdminPage() {
   return (
   <div className="admin-dashboard">
     <div className="admin-mini-nav">
-    <Link to="/">Onboarding</Link>
-    <span>·</span>
-    <Link to="/data">Data</Link>
+    <Link to="/data">View Data</Link>
     </div>
     <h2>Admin — Configure Onboarding Pages</h2>
     <p>Choose which components appear on each page. Each page must have at least one.</p>

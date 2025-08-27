@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getFlowConfig, registerUser, updateUserStep } from '../utils/api';
 
-const STORAGE_KEY = 'onboardingProgress'; // saving progress locally
+const STORAGE_KEY = 'onboardingProgress'; 
 
 const initialF = {
   email:'', password:'', aboutMe:'', birthdate:'',
@@ -23,13 +23,11 @@ export default function Wizard() {
   const [cfg, setCfg] = useState(null);
   const [step, setStep] = useState(1);
   const [userId, setUserId] = useState(null);
-  // const [f, setF] = useState({ email:'', password:'', aboutMe:'', birthdate:'', street:'', city:'', state:'', zip:'' });
   const [f, setF] = useState(initialF);
   const [resumeOffer, setResumeOffer] = useState(null);
 
   const navigate = useNavigate();
 
-  // useEffect(() => { (async () => { const cfgData = await getFlowConfig(); setCfg(cfgData); })(); }, []);
   useEffect(() => {
     (async() => {
       const cfgData = await getFlowConfig();
@@ -39,7 +37,6 @@ export default function Wizard() {
     const saved = loadProgress();
     if (saved?.userId) setResumeOffer(saved);
   }, []);
-  // const on = e => setF(prev => ({ ...prev, [e.target.name]: e.target.value }));
   const on = e => {
     const next = { ...f, [e.target.name]: e.target.value};
     setF(next);
@@ -55,7 +52,7 @@ export default function Wizard() {
       if (!f.email || !f.password) { alert('Email & password required'); return; }
 
       try {
-      const reg = await registerUser(f.email, f.password); // reg = { userId }
+      const reg = await registerUser(f.email, f.password);
       setUserId(reg.userId);
 
       saveProgress({ userId: reg.userId, step: 2, data: {} });
@@ -107,19 +104,38 @@ export default function Wizard() {
 
   const fields = (page) => (
     <>
-      {page.includes('aboutMe') && (<textarea name="aboutMe" placeholder="About me" value={f.aboutMe} onChange={on} />)}
-      {page.includes('birthdate') && (<input name="birthdate" type="date" max={todayStr} min="1900-01-01" value={f.birthdate} onChange={on} />)}
-      {page.includes('address') && (
-        <>
-          <input name="street" placeholder="Street" value={f.street} onChange={on} />
-          <input name="city" placeholder="City" value={f.city} onChange={on} />
-          <input name="state" placeholder="State" value={f.state} onChange={on} />
-          <input name="zip" placeholder="Zip" value={f.zip} 
-           onChange={(e) => setF(prev => ({ ...prev, zip: e.target.value.replace(/\D/g, '')}))}
-           inputMode="numeric" maxLength={5}
-            />
-        </>
+      {page.includes('aboutMe') && (
+      <>
+        <label htmlFor="aboutMe">About Me</label>
+        <textarea id="aboutMe" name="aboutMe" placeholder="About me" value={f.aboutMe} onChange={on} />
+      </>
       )}
+      {page.includes('birthdate') && (
+      <>
+        <label htmlFor="birthdate">Birthdate</label>
+        <input id="birthdate" name="birthdate" type="date" max={todayStr} min="1900-01-01" value={f.birthdate} onChange={on} />
+      </>
+      )}
+
+      {page.includes('address') && (
+      <>
+        <label htmlFor="street">Street Address</label>
+        <input id="street" name="street" placeholder="Street" value={f.street} onChange={on} />
+
+        <label htmlFor="city">City</label>
+        <input id="city" name="city" placeholder="City" value={f.city} onChange={on} />
+
+        <label htmlFor="state">State</label>
+        <input id="state" name="state" placeholder="State" value={f.state} onChange={on} />
+
+        <label htmlFor="zip">ZIP Code</label>
+        <input
+          id="zip" name="zip" placeholder="Zip" value={f.zip}
+          onChange={(e) => setF(prev => ({ ...prev, zip: e.target.value.replace(/\D/g, '')}))}
+          inputMode="numeric" maxLength={5}
+        />
+      </>
+    )}
     </>
   );
 
