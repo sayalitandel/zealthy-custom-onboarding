@@ -18,7 +18,7 @@ services:
         value: "https://zealthy-frontend.onrender.com"
 
   # --- Frontend (Vite) ---
-  - type: static
+  - type: static_site
     name: zealthy-frontend         
     rootDir: frontend
     buildCommand: "npm ci && npm run build"
