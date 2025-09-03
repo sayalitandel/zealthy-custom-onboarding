@@ -100,6 +100,11 @@ export default function Wizard() {
     }
   };
 
+  const goBack = () => {
+    if (step <= 1) return;
+    setStep(step - 1);
+  };
+
   if (!cfg && (step === 2 || step === 3)) return <p>Loading…</p>; 
 
   const fields = (page) => (
@@ -180,9 +185,16 @@ export default function Wizard() {
       {step===3 && fields(cfg.page3)}
 
       {step <= 3 && (
+        <div className="button-row">
+          {step > 1 && (
+            <button type="button" className="btn-secondary" onClick={goBack}>
+               Back
+            </button>
+          )}
         <button type="submit" disabled={step !== 1 && !cfg}>
           {step === 3 ? 'Finish' : 'Next'}
         </button>
+        </div>
       )}
 
       {step === 4 && (

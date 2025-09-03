@@ -224,3 +224,18 @@ body {
   border-radius: 6px;
 }
 .admin-mini-nav a:hover { background: #e8ece0; }
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+.button-row button { flex: 1; }
+
+.login-form .btn-secondary {
+  background: #e5e7eb;
+  color: #111;
+}
+.login-form .btn-secondary:hover {
+  filter: brightness(0.98);
+}
