@@ -15,7 +15,7 @@ services:
       - key: POSTGRES_URL
         value: "postgresql://neondb_owner:npg_KrtX59kMjaRO@ep-withered-wildflower-addb8fho-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
       - key: FRONTEND_URL           
-        value: "https://zealthy-frontend.onrender.com"
+        value: "https://zealthy-frontend-9alq.onrender.com"
 
   # --- Frontend (Vite) ---
   - type: web
@@ -27,4 +27,4 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL          
-        value: "https://zealthy-backend.onrender.com/api"
+        value: "https://zealthy-backend-bkn4.onrender.com/api"
