@@ -12,15 +12,17 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: psql 'postgresql://neondb_owner:npg_KrtX59kMjaRO@ep-withered-wildflower-addb8fho-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'          # <- put your Neon connection string here (with sslmode=require)
+      - key: psql 'postgresql://neondb_owner:npg_KrtX59kMjaRO@ep-withered-wildflower-addb8fho-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
         value: "postgresql://<user>:<password>@<host>/<db>?sslmode=require"
       - key: FRONTEND_URL           
         value: "https://zealthy-frontend.onrender.com"
 
   # --- Frontend (Vite) ---
-  - type: static_site
-    name: zealthy-frontend         
+  - type: web
+    name: zealthy-frontend
+    runtime: static        
     rootDir: frontend
+    autoDeploy: true
     buildCommand: "npm ci && npm run build"
     staticPublishPath: dist
     envVars:
