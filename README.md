@@ -8,7 +8,9 @@ Frontend: https://zealthy-frontend-9alq.onrender.com
 
 Backend health: https://zealthy-backend-bkn4.onrender.com/healthz
 
-Admin section is intentionally unauthenticated for this exercise (as requested).
+Admin section: https://zealthy-frontend-9alq.onrender.com/admin
+
+Data Section: https://zealthy-frontend-9alq.onrender.com/data
 
 ## Features
 

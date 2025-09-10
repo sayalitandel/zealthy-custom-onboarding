@@ -173,10 +173,16 @@ body {
   padding:12px 14px;
   border-bottom:1px solid #eee;
   vertical-align:top;
-  word-break:break-word;
+  white-space: nowrap;
 }
 .data-table tbody tr:nth-child(odd){ background:#fafafa; }
 
+.data-table th:nth-child(2),
+.data-table td:nth-child(2){
+  white-space: normal;       
+  word-break: break-word;    
+  max-width: 520px;          
+}
 
 .brand {
   font-weight: 800; letter-spacing: .08em;
