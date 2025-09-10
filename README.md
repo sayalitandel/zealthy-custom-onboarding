@@ -166,4 +166,4 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-For any inquiries, please reach out to [sayalisuniltandelk@gmail.com](mailto:sayalisuniltandelk@gmail.com).
+For any inquiries, please reach out to [sayalisuniltandel@gmail.com](mailto:sayalisuniltandel@gmail.com).
