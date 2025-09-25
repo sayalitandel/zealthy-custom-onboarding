@@ -17,9 +17,9 @@ export default function DataPage() {
   })();
 }, []);
   return (
-    <div className="page">
-      <div className="data-card">
+    <div className="data-card">
         <h2> User Data</h2>
+        <div className="table-wrap">
         <table className="data-table">
           <thead><tr>
             <th>Email</th><th>About Me</th><th>Birthdate</th>

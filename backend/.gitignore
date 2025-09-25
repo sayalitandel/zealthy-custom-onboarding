@@ -4,8 +4,8 @@ node_modules/
 # Environment variables 
 .env
 .env.local
-.env.*.local # Catches files like .env.development.local, .env.test.local
-.env.production # Explicitly ignore, though handled by general .env*
+.env.*.local
+.env.production 
 
 # Logs and temporary files
 npm-debug.log*
@@ -17,7 +17,7 @@ lerna-debug.log*
 *~
 
 # Operating System files
-.DS_Store # macOS specific system files
+.DS_Store 
 
 # Build or compiled output
 dist/
