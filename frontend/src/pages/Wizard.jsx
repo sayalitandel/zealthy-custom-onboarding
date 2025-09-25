@@ -11,9 +11,7 @@ const STORAGE_KEY = 'onboardingProgress';
 const initialF = {
   email:'', password:'', aboutMe:'', birthdate:'',
   street:'', city:'', state:'', zip:''
-};
-
-// const todayStr = new Date().toISOString().slice(0, 10); 
+}; 
 
 const loadProgress = () => {
   try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; }
@@ -29,7 +27,7 @@ export default function Wizard() {
   const [userId, setUserId] = useState(null);
   const [f, setF] = useState(initialF);
   const [resumeOffer, setResumeOffer] = useState(null);
-  const [errors, setErrors] = useState({}); //New
+  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
 
@@ -51,9 +49,8 @@ export default function Wizard() {
     }
   };
 
-  const emailOk = (v) => /\S+@\S+\.\S+/.test(v); //New
+  const emailOk = (v) => /\S+@\S+\.\S+/.test(v);
 
-  //New 
   function validateStep(curStep) {
   const nextErrors = {};
 
@@ -71,35 +68,22 @@ export default function Wizard() {
       if (!f.birthdate) nextErrors.birthdate = 'Please select your birthdate.';
       else if (new Date(f.birthdate) > new Date()) nextErrors.birthdate = 'Birthdate cannot be in the future.';
     }
-
-    // if (comps.includes('address')) {
-    //   const aErr = {};
-    //   if (!f.street.trim()) aErr.street = 'Street is required.';
-    //   if (!f.city.trim()) aErr.city = 'City is required.';
-    //   if (!f.state.trim()) aErr.state = 'State is required.';
-    //   if (!/^\d{5}$/.test(f.zip)) aErr.zip = 'ZIP must be 5 digits.';
-    //   if (Object.keys(aErr).length) nextErrors.address = aErr;
-    // }
   }
 
   setErrors(nextErrors);
   return Object.keys(nextErrors).length === 0;
 }
-//New
 
   const submit = async () => {
     if (step === 4) return;
 
-    //New
     if (!validateStep(step)) {
       const el = document.querySelector(".error");
       if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
-      return; // stop here if validation fails
+      return;
     }
-    //New
 
     if (step === 1) {
-      // if (!f.email || !f.password) { alert('Email & password required'); return; }
 
       try {
       const reg = await registerUser(f.email, f.password);
@@ -157,43 +141,6 @@ export default function Wizard() {
 
   if (!cfg && (step === 2 || step === 3)) return <p>Loading…</p>; 
 
-  // const fields = (page) => (
-  //   <>
-  //     {page.includes('aboutMe') && (
-  //     <>
-  //       <label htmlFor="aboutMe">About Me</label>
-  //       <textarea id="aboutMe" name="aboutMe" placeholder="About me" value={f.aboutMe} onChange={on} />
-  //     </>
-  //     )}
-  //     {page.includes('birthdate') && (
-  //     <>
-  //       <label htmlFor="birthdate">Birthdate</label>
-  //       <input id="birthdate" name="birthdate" type="date" max={todayStr} min="1900-01-01" value={f.birthdate} onChange={on} />
-  //     </>
-  //     )}
-
-  //     {page.includes('address') && (
-  //     <>
-  //       <label htmlFor="street">Street Address</label>
-  //       <input id="street" name="street" placeholder="Street" value={f.street} onChange={on} />
-
-  //       <label htmlFor="city">City</label>
-  //       <input id="city" name="city" placeholder="City" value={f.city} onChange={on} />
-
-  //       <label htmlFor="state">State</label>
-  //       <input id="state" name="state" placeholder="State" value={f.state} onChange={on} />
-
-  //       <label htmlFor="zip">ZIP Code</label>
-  //       <input
-  //         id="zip" name="zip" placeholder="Zip" value={f.zip}
-  //         onChange={(e) => setF(prev => ({ ...prev, zip: e.target.value.replace(/\D/g, '')}))}
-  //         inputMode="numeric" maxLength={5}
-  //       />
-  //     </>
-  //   )}
-  //   </>
-  // );
-
   return (
     <div className="container">
       <form
@@ -213,8 +160,6 @@ export default function Wizard() {
 
         {step === 1 && (
           <>
-            {/* <label>Email</label>
-          <input name="email" placeholder="Email" value={f.email} onChange={on} /> */}
             <label htmlFor="email">Email</label>
             <input
               id="email"
@@ -225,8 +170,6 @@ export default function Wizard() {
             />
             {errors.email && <div className="error">{errors.email}</div>}
 
-            {/* <label>Password</label>
-          <input name="password" type="password" placeholder="Password" value={f.password} onChange={on} /> */}
             <label htmlFor="password">Password</label>
             <input
               id="password"
@@ -261,9 +204,6 @@ export default function Wizard() {
             )}
           </>
         )}
-
-        {/* {step===2 && fields(cfg.page2)}
-      {step===3 && fields(cfg.page3)} */}
 
         {step === 2 && (
           <>
