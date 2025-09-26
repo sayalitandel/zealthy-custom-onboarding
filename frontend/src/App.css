@@ -177,12 +177,12 @@ body {
 }
 .data-table tbody tr:nth-child(odd){ background:#fafafa; }
 
-.data-table th:nth-child(2),
+/* .data-table th:nth-child(2),
 .data-table td:nth-child(2){
   white-space: normal;       
   word-break: break-word;    
   max-width: 520px;          
-}
+} */
 
 .brand {
   font-weight: 800; letter-spacing: .08em;
@@ -253,7 +253,7 @@ body {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-
+/* --> */
 .aboutMeCell {
   white-space: normal;
   word-break: break-word;     
@@ -271,4 +271,6 @@ body {
     padding: 10px 8px;
     font-size: 14px;
   }
+  /* --> */
+  .aboutMeCell { max-width: 220px; }
 }
