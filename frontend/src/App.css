@@ -255,8 +255,10 @@ body {
 }
 
 .aboutMeCell {
-  max-width: 320px;
   white-space: normal;
+  word-break: break-word;     
+  overflow-wrap: anywhere;    
+  max-width: 520px;          
 }
 
 @media (max-width: 700px) {
@@ -268,9 +270,5 @@ body {
   .data-table td {
     padding: 10px 8px;
     font-size: 14px;
-  }
-
-  .aboutMeCell {
-    max-width: 220px;
   }
 }
