@@ -162,7 +162,12 @@ body {
 
 .data-card h2{ margin:0 0 16px; text-align:center; }
 
-.data-table{ width:100%; border-collapse:collapse; }
+.data-table{
+   width:100%; 
+   border-collapse:collapse; 
+   table-layout: fixed;     /* --> n */
+   min-width: 900px;       /* --> n */
+  }
 .data-table thead th{
   background:#f4f6eb;           
   font-weight:700;
@@ -174,6 +179,8 @@ body {
   border-bottom:1px solid #eee;
   vertical-align:top;
   white-space: nowrap;
+  overflow: hidden;        /* --> n */
+  text-overflow: ellipsis; /* --> n */
 }
 .data-table tbody tr:nth-child(odd){ background:#fafafa; }
 
@@ -258,7 +265,7 @@ body {
   white-space: normal;
   word-break: break-word;     
   overflow-wrap: anywhere;    
-  max-width: 520px;          
+  /* max-width: 520px;           */
 }
 
 @media (max-width: 700px) {
@@ -272,5 +279,9 @@ body {
     font-size: 14px;
   }
   /* --> */
-  .aboutMeCell { max-width: 220px; }
+  /* .aboutMeCell { max-width: 220px; } */
+
+  .data-table { min-width: 760px; }
+
+  .aboutMeCell { max-width: 320px; } /* guard rail for very long notes */
 }
