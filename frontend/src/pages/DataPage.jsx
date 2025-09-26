@@ -18,25 +18,57 @@ export default function DataPage() {
 }, []);
   return (
     <div className="data-card">
-        <h2> User Data</h2>
-        <div className="table-wrap">
+      <h2> User Data</h2>
+      <div className="table-wrap">
         <table className="data-table">
-          <thead><tr>
-            <th>Email</th><th>About Me</th><th>Birthdate</th>
-            <th>Street Address</th><th>City</th><th>State</th><th>ZIP</th>
-          </tr></thead>
-          <tbody>
-            {rows.map(r => (
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>About Me</th>
+              <th>Birthdate</th>
+              <th>Street Address</th>
+              <th>City</th>
+              <th>State</th>
+              <th>ZIP</th>
+            </tr>
+          </thead>
+          {/* <tbody>
+            {rows.map((r) => (
               <tr key={r.id}>
                 <td>{r.email}</td>
-                <td>{r.aboutMe || ''}</td>
-                <td>{r.birthdate || ''}</td>
-                <td>{r.UserAddress?.street || ''}</td>
-                <td>{r.UserAddress?.city || ''}</td>
-                <td>{r.UserAddress?.state || ''}</td>
-                <td>{r.UserAddress?.zip || ''}</td>
+                <td>{r.aboutMe || ""}</td>
+                <td>{r.birthdate || ""}</td>
+                <td>{r.UserAddress?.street || ""}</td>
+                <td>{r.UserAddress?.city || ""}</td>
+                <td>{r.UserAddress?.state || ""}</td>
+                <td>{r.UserAddress?.zip || ""}</td>
               </tr>
             ))}
+          </tbody> */}
+
+          <tbody>
+            {rows.length === 0 ? (
+              <tr>
+                <td
+                  colSpan="7"
+                  style={{ textAlign: "center", padding: "16px" }}
+                >
+                  No users yet.
+                </td>
+              </tr>
+            ) : (
+              rows.map((r) => (
+                <tr key={r.id}>
+                  <td>{r.email}</td>
+                  <td className="aboutMeCell">{r.aboutMe || ""}</td>{" "}
+                  <td>{r.birthdate || ""}</td>
+                  <td>{r.UserAddress?.street || ""}</td>
+                  <td>{r.UserAddress?.city || ""}</td>
+                  <td>{r.UserAddress?.state || ""}</td>
+                  <td>{r.UserAddress?.zip || ""}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
