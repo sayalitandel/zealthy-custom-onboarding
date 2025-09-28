@@ -2,6 +2,8 @@
   --topbar-h: 64px;
 }
 
+*, *::before, *::after { box-sizing: border-box; }
+
 /* --- Base Style --- */
 html, body, #root {
   height: 100%;
@@ -165,8 +167,8 @@ body {
 .data-table{
    width:100%; 
    border-collapse:collapse; 
-   table-layout: fixed;     /* --> n */
-   min-width: 900px;       /* --> n */
+   table-layout: fixed;     
+   min-width: 900px;       
   }
 .data-table thead th{
   background:#f4f6eb;           
@@ -179,17 +181,10 @@ body {
   border-bottom:1px solid #eee;
   vertical-align:top;
   white-space: nowrap;
-  overflow: hidden;        /* --> n */
-  text-overflow: ellipsis; /* --> n */
+  overflow: hidden;        
+  text-overflow: ellipsis;
 }
 .data-table tbody tr:nth-child(odd){ background:#fafafa; }
-
-/* .data-table th:nth-child(2),
-.data-table td:nth-child(2){
-  white-space: normal;       
-  word-break: break-word;    
-  max-width: 520px;          
-} */
 
 .brand {
   font-weight: 800; letter-spacing: .08em;
@@ -260,28 +255,45 @@ body {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-/* --> */
+
 .aboutMeCell {
   white-space: normal;
-  word-break: break-word;     
+  word-break: normal;     
   overflow-wrap: anywhere;    
-  /* max-width: 520px;           */
+  min-width: 260px;
 }
 
 @media (max-width: 700px) {
-  .data-card {
-    padding: 16px;
+  .data-table {
+    table-layout: fixed;     
+    min-width: 900px;     
   }
 
   .data-table th,
   .data-table td {
-    padding: 10px 8px;
-    font-size: 14px;
+    white-space: nowrap;     
+    text-overflow: ellipsis;
+    overflow: hidden;
+    vertical-align: top;
+  }   
+
+  .data-table td.emailCell,
+  .data-table td.aboutMeCell,
+  .data-table td.streetCell,
+  .data-table td.birthdateCell,
+  .data-table td.cityCell,
+  .data-table td.stateCell {
+    white-space: normal;        
+    overflow-wrap: anywhere;    
+    word-break: break-word;
+    text-overflow: clip;        
+    overflow: visible;
   }
-  /* --> */
-  /* .aboutMeCell { max-width: 220px; } */
 
-  .data-table { min-width: 760px; }
-
-  .aboutMeCell { max-width: 320px; } /* guard rail for very long notes */
+  .data-table thead th:nth-child(3),  
+  .data-table thead th:nth-child(6) {
+   white-space: normal;
+   text-overflow: clip;
+   overflow: visible;
+  }
 }
