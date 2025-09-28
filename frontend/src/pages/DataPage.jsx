@@ -21,6 +21,15 @@ export default function DataPage() {
       <h2> User Data</h2>
       <div className="table-wrap">
         <table className="data-table">
+          <colgroup>
+            <col style={{ width: '22%' }} />  {/* Email */}
+            <col style={{ width: '34%' }} />  {/* About Me */}
+            <col style={{ width: '12%' }} />  {/* Birthdate */}
+            <col style={{ width: '18%' }} />  {/* Street Address */}
+            <col style={{ width: '12%' }} />  {/* City */}
+            <col style={{ width: '10%'  }} />  {/* State */}
+            <col style={{ width: '10%' }} />  {/* ZIP */}
+          </colgroup>
           <thead>
             <tr>
               <th>Email</th>
@@ -32,19 +41,6 @@ export default function DataPage() {
               <th>ZIP</th>
             </tr>
           </thead>
-          {/* <tbody>
-            {rows.map((r) => (
-              <tr key={r.id}>
-                <td>{r.email}</td>
-                <td>{r.aboutMe || ""}</td>
-                <td>{r.birthdate || ""}</td>
-                <td>{r.UserAddress?.street || ""}</td>
-                <td>{r.UserAddress?.city || ""}</td>
-                <td>{r.UserAddress?.state || ""}</td>
-                <td>{r.UserAddress?.zip || ""}</td>
-              </tr>
-            ))}
-          </tbody> */}
 
           <tbody>
             {rows.length === 0 ? (
@@ -59,12 +55,12 @@ export default function DataPage() {
             ) : (
               rows.map((r) => (
                 <tr key={r.id}>
-                  <td>{r.email}</td>
+                  <td className="emailCell">{r.email}</td>
                   <td className="aboutMeCell">{r.aboutMe || ""}</td>{" "}
-                  <td>{r.birthdate || ""}</td>
-                  <td>{r.UserAddress?.street || ""}</td>
-                  <td>{r.UserAddress?.city || ""}</td>
-                  <td>{r.UserAddress?.state || ""}</td>
+                  <td className="birthdateCell">{r.birthdate || ""}</td>
+                  <td className="streetCell">{r.UserAddress?.street || ""}</td>
+                  <td className="cityCell">{r.UserAddress?.city || ""}</td>
+                  <td className="stateCell">{r.UserAddress?.state || ""}</td>
                   <td>{r.UserAddress?.zip || ""}</td>
                 </tr>
               ))
